@@ -11,17 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function index()
     {
-        $logged_user = isset($_SESSION['user']) ? $_SESSION['user'] : false;
-        // return json_encode($_SESSION['user']);
+        $logged_user = session()->has('user') ? session()->get('user') : false;
 
-        // return json_encode($user);
         return view('home.index', ['logged_user' => $logged_user]);
     }
 
@@ -40,18 +34,25 @@ class HomeController extends Controller
 
 
         if ($user = DB::table('users')->where('email', '=', $request->email)->first()) {
-            // return json_encode($user);
+
             if (Hash::check($request->password, $user->password)) {
+
                 // Login passed
                 Config::get('session_start');
-                $_SESSION['user'] = $user;
+                $request->session()->put('user', $user);
 
                 return Redirect::action([HomeController::class, 'index']);
             }
         }
 
         // Login failed
-
         return redirect()->route('home.login');
+    }
+
+    public function logout(Request $request)
+    {
+        if ($request->session()->has('user')) $request->session()->forget('user');
+
+        return redirect()->action([HomeController::class, 'index']);
     }
 }

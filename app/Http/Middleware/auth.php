@@ -16,6 +16,10 @@ class auth
      */
     public function handle(Request $request, Closure $next)
     {
+        if (!isset($_SESSION['user'])) {
+            redirect()->route('home.login');
+        }
+
         return $next($request);
     }
 }

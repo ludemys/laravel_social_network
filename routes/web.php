@@ -22,6 +22,8 @@ Route::prefix('/home')->group(function () {
         ->name('home.login');
     Route::post('/verificate', [HomeController::class, 'verificate'])
         ->name('home.verificate');
+    Route::post('/logout', [HomeController::class, 'logout'])
+        ->name('home.logout');
 });
 
 Route::get('/', function () {
