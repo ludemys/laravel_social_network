@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
 @section('main')
-    <form method="POST" class="form" action="{{ route('users.update', ['user' => $logged_user->id]) }}">
+    <form method="POST" class="form" action="{{ route('users.update', ['user' => $logged_user->id]) }}" enctype="multipart/form-data">
         @csrf
-        @method('patch')
+        @method('put')
 
         @error('nickname')
             <small>{{ $message }}</small>
@@ -49,6 +49,16 @@
 
         <hr class="line">
 
+        @error('image_path')
+            <small>{{ $message }}</small>
+        @enderror
+        <div class="edit-label">
+            <h2>Profile Image: </h2>
+            <input class="input" type="file" name="image_path">
+        </div>
+
+        <hr class="line">
+
         @error('password')
             <small>{{ $message }}</small>
         @enderror
@@ -62,8 +72,8 @@
         @endif
         <div class="edit-label">
             <h2>* Current password: </h2>
-            <input class="input" type="password" name="password" placeholder="Password">
-            <input class="input" type="password" name="password_confirm" placeholder="Confirm password">
+            <input class="input" type="password" name="password" placeholder="Password" required>
+            <input class="input" type="password" name="password_confirm" placeholder="Confirm password" required>
         </div>
 
         <hr class="line">

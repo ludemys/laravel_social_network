@@ -4,8 +4,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Middleware\Login_auth;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('main')
-    <form action="{{ route('users.store') }}" method="post">
+    <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('post')
 
@@ -21,9 +21,15 @@
         <input type="email" name="email" placeholder="Email"><br><br>
 
         @error('password')
-            <h3>*{{ $message }}</h3>
+        <h3>*{{ $message }}</h3>
         @enderror
         <input type="password" name="password" placeholder="Password"><br><br>
+        
+        @error('image_path')
+            <h3>*{{ $message }}</h3>
+        @enderror
+        <label for="image_path">Profile Image</label>
+        <input type="file" name="image_path"><br><br>
 
         <input type="submit" value="Submit">
     </form>

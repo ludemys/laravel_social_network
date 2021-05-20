@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -51,6 +53,7 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'nickname' => 'required|unique:App\Models\User,nickname|max:50',
             'email' => 'required|unique:App\Models\User,email|max:255',
+            'image_path' => 'required|file|image|max:5120',
             'password' => 'required|min:8'
         ]);
 
@@ -58,6 +61,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->nickname = $request->nickname;
         $user->email = $request->email;
+        $request->file('image_path') ? $user->image = $this->store_image($request->file('image_path')) : null;
         $user->password = Hash::make($request->password);
         $user->isAdmin = false;
 
@@ -120,9 +124,11 @@ class UserController extends Controller
             'email' => 'nullable|email:rfc,dns,filter',
             'new_password' => 'nullable|min:8',
             'new_password_confirm' => 'required_with:new_password|same:new_password',
+            'image_path' => 'nullable|file|image|max:5120',
             'password' => 'required|min:8|',
             'password_confirm' => 'required|min:8|same:password'
         ]);
+
 
         $old_user = DB::table('users')
             ->where('id', '=', $id)
@@ -133,13 +139,12 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
-        // return json_encode($user);
 
-        // $user->id = $id;
         $user->nickname = $request->filled('nickname') ? $request->input('nickname') : $old_user->nickname;
         $user->name = $request->filled('name') ? $request->input('name') : $old_user->name;
         $user->email = $request->filled('email') ? $request->input('email') : $old_user->email;
         $user->password = $request->filled('new_password') ? Hash::make($request->input('new_password')) : $old_user->password;
+        $user->image = $request->file('image_path') !== null ? $this->store_image($request->file('image_path')) : $old_user->image;
         $user->isAdmin = $old_user->isAdmin;
 
         $user->update();
@@ -157,5 +162,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function store_image($image)
+    {
+        if ($image) {
+            // Unique name
+            $image_path_name = time() . $image->getClientOriginalName();
+
+            // Storage in storage/app/users
+            Storage::disk('users')->put($image_path_name, File::get($image));
+        }
     }
 }
