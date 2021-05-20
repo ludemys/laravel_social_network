@@ -32,7 +32,7 @@ Route::prefix('/home')->group(function () {
 
     Route::post('/verificate', [HomeController::class, 'verificate'])
         ->name('home.verificate');
-    Route::post('/logout', [HomeController::class, 'logout'])
+    Route::get('/logout', [HomeController::class, 'logout'])
         ->name('home.logout');
 });
 

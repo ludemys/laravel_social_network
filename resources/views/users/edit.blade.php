@@ -68,7 +68,7 @@
 
         <hr class="line">
         
-        Fields with * are required
+        Fields with <strong>*</strong> are required
 
         <hr class="line">
 

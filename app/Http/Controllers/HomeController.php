@@ -50,6 +50,6 @@ class HomeController extends Controller
     {
         if ($request->session()->has('user')) $request->session()->forget('user');
 
-        return redirect()->action([HomeController::class, 'index']);
+        return redirect()->action([HomeController::class, 'login']);
     }
 }

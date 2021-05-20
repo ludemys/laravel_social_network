@@ -6,7 +6,7 @@
     @if ($logged_in)
 
         <a href="{{ route('users.edit', ['user' => $user->id]) }}" class="link">User Settings</a>
-        <form action="{{ route('home.logout') }}" method="post">@csrf <button type="submit">Log Out</button></form>
+        <a href="{{ route('home.logout') }}" class="link">Log Out</a>
         
     @endif
 

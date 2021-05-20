@@ -115,10 +115,10 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'nickname' => 'max:20|',
-            'name' => '',
-            'email' => '',
-            'new_password' => '',
+            'nickname' => 'nullable|max:20|regex:[a-zA-Z0-9+]',
+            'name' => 'nullable|max:255|regex:[a-zA-Z0-9+]',
+            'email' => 'nullable|email:rfc,dns,filter',
+            'new_password' => 'nullable|min:8',
             'new_password_confirm' => 'required_with:new_password|same:new_password',
             'password' => 'required|min:8|',
             'password_confirm' => 'required|min:8|same:password'
@@ -142,7 +142,7 @@ class UserController extends Controller
         $user->password = $request->filled('new_password') ? Hash::make($request->input('new_password')) : $old_user->password;
         $user->isAdmin = $old_user->isAdmin;
 
-        $user->save();
+        $user->update();
 
         return redirect()
             ->action([HomeController::class, 'logout'])
