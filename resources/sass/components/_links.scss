@@ -1,0 +1,17 @@
+.link {
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.user-link {
+    font-size: 2rem;
+
+    margin-left: 1em;
+
+    transition: .2s;
+
+    &:hover {
+        transform: scale(.95);
+    }
+}

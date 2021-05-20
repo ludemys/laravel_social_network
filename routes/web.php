@@ -4,6 +4,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\Login_auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,37 +17,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return redirect()->route('home.index');
+});
+
 Route::prefix('/home')->group(function () {
     Route::get('/', [HomeController::class, 'index'])
         ->name('home.index');
     Route::get('/login', [HomeController::class, 'login'])
         ->name('home.login');
+    Route::get('/profile', [HomeController::class, 'profile'])
+        ->name('home.profile')
+        ->middleware('Login_auth');
+
     Route::post('/verificate', [HomeController::class, 'verificate'])
         ->name('home.verificate');
     Route::post('/logout', [HomeController::class, 'logout'])
         ->name('home.logout');
 });
 
-Route::get('/', function () {
-    // $image = new Image();
-
-    // $images = $image->all();
-
-    // echo '<ol>';
-    // foreach ($images as $i) {
-    //     // echo "<li>" . $i->user->name . ' | ' . $i->user->email . ' | ' . $i->user->created_at . "</li>";
-    //     echo "<li>$i->path | " . count($i->likes) . " likes.<ul>";
-
-    //     foreach ($i->comments as $j) {
-    //         echo "<li>" . $j->user->name . ": $j->content.</li>";
-    //     }
-
-    //     echo '</ul> </li><hr/>';
-    // }
-    // echo '</ol>';
-
-    return redirect()->route('home.index');
-});
-
-
+// Route::get('/users/change-password', [UserController::class, 'change_password'])
+//     ->name('users.change_password');
 Route::resource('/users', UserController::class);

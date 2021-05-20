@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Open+Sans&family=Lobster&display=swap');
+@import url('https://gist.githubusercontent.com/hcatlin/1027867/raw/dc4f0c2ebf8e58026e65edc9fbabe812c3621805/reset.scss');
+
+* {
+    font-family: "Roboto", "Montserrat", "Open Sans", sans-serif;
+
+    padding: 0;
+    margin: 0;
+
+    color: #333;
+
+    text-decoration: none;
+}
+
+html,
+body {
+    height: 100%;
+    min-height: 100vh;
+
+}
+
+@import 'components/links';
+@import 'components/form';
+
+@import 'components/layouts/container';
+@import 'components/layouts/header';
+@import 'components/layouts/main';
+@import 'components/layouts/footer';

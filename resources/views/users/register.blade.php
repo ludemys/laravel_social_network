@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('main')
     <form action="{{ route('users.store') }}" method="post">
@@ -28,5 +28,6 @@
         <input type="submit" value="Submit">
     </form>
 
-    <a href="{{ route('users.index') }}">Return to Home</a>
+    <a href="{{ route('home.login') }}" class="link">Already have an account? Log in</a>
+    <a href="{{ route('users.index') }}" class="link">Return to Home</a>
 @endsection

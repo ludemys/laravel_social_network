@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Config;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,8 +28,6 @@ class HomeController extends Controller
             'email' => 'required|max:255',
             'password' => 'required|min:8'
         ]);
-
-        $users = new User();
 
 
         if ($user = DB::table('users')->where('email', '=', $request->email)->first()) {

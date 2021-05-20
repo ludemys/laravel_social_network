@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.main')
 @section('main')
     <form action="{{ route('home.verificate') }}" method="post">
         @csrf
@@ -17,5 +17,6 @@
         <input type="submit" value="Login">
     </form>
 
-    <a href="{{ route('home.index') }}">Return to Home</a>
+    <a href="{{ route('users.create') }}" class="link">Don't have an account? Register</a>
+    <a href="{{ route('home.index') }}" class="link">Return to Home</a>
 @endsection

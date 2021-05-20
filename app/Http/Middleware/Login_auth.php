@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class auth
+class Login_auth
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class auth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!isset($_SESSION['user'])) {
-            redirect()->route('home.login');
+        if (!session()->has('user')) {
+            return redirect()->route('home.login')->withErrors(['not_logged', 'Please log in to get in this page']);
         }
 
         return $next($request);
