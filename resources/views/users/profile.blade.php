@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
 @section('main')
+    @include('includes.avatar', ['class_name' => 'avatar-profile'])
+    {{-- <h3>{{ json_encode($user->image) }}</h3> --}}
     <h2>{{ $user->nickname }}</h2>
     
     @if ($logged_in)

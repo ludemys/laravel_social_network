@@ -1,17 +1,22 @@
 .form {
-    .edit-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .edit-label,
+    .field {
         display: flex;
+        align-items: center;
 
         .input {
             margin-left: 1rem;
             text-align: center;
         }
-
-
     }
 
     .line {
         margin-top: 1em;
         margin-bottom: 1em;
+        align-self: stretch;
     }
 }

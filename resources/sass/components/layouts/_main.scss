@@ -5,4 +5,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .avatar-profile {
+        max-width: 10em;
+    }
 }

@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function verificate(Request $request)
     {
         $request->validate([
-            'email' => 'required|max:255',
+            'email' => 'required|max:255|email:rfc,dns',
             'password' => 'required|min:8'
         ]);
 
@@ -40,10 +40,15 @@ class HomeController extends Controller
 
                 return Redirect::action([HomeController::class, 'index']);
             }
+
+            return redirect()->action([HomeController::class, 'login'])->with('password_incorrect', 'Password incorrect');
+            // return redirect('/');
+        } else {
+            return redirect()->action([HomeController::class, 'login'])->with('email_unfound', "There's not any account with this email");
         }
 
         // Login failed
-        return redirect()->route('home.login');
+        return redirect()->action([HomeController::class, 'login']);
     }
 
     public function logout(Request $request)

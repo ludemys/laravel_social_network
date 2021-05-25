@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\UserController as ControllersUserController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -119,14 +121,14 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'nickname' => 'nullable|max:20|regex:[a-zA-Z0-9+]',
-            'name' => 'nullable|max:255|regex:[a-zA-Z0-9+]',
+            'nickname' => 'nullable|max:50|regex:*[a-zA-Z0-9+]*',
+            'name' => 'nullable|max:255|regex:*[a-zA-Z+]*',
             'email' => 'nullable|email:rfc,dns,filter',
             'new_password' => 'nullable|min:8',
             'new_password_confirm' => 'required_with:new_password|same:new_password',
             'image_path' => 'nullable|file|image|max:5120',
             'password' => 'required|min:8|',
-            'password_confirm' => 'required|min:8|same:password'
+            'password_confirm' => 'required|same:password|min:8'
         ]);
 
 
@@ -138,6 +140,7 @@ class UserController extends Controller
             return redirect()->action([UserController::class, 'edit'], ['user' => $id])->with('password_incorrect', 'Password incorrect');
         }
 
+        // Get & set register in database
         $user = User::find($id);
 
         $user->nickname = $request->filled('nickname') ? $request->input('nickname') : $old_user->nickname;
@@ -147,10 +150,16 @@ class UserController extends Controller
         $user->image = $request->file('image_path') !== null ? $this->store_image($request->file('image_path')) : $old_user->image;
         $user->isAdmin = $old_user->isAdmin;
 
-        $user->update();
+        $user->save();
+
+        // Update session
+        $user_row = DB::table('users')
+            ->where('id', '=', $id)
+            ->first();
+        $request->session()->put('user', $user_row);
 
         return redirect()
-            ->action([HomeController::class, 'logout'])
+            ->action([UserController::class, 'show'], ['user' => $id])
             ->with('success', 'Data updated successfully');
     }
 
@@ -173,5 +182,14 @@ class UserController extends Controller
             // Storage in storage/app/users
             Storage::disk('users')->put($image_path_name, File::get($image));
         }
+
+        return $image_path_name;
+    }
+
+    public function get_avatar($filename)
+    {
+        $file = Storage::disk('users')->get($filename);
+
+        return new Response($file, 200);
     }
 }

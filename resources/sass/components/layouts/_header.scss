@@ -20,4 +20,17 @@
     .link {
         margin-left: 1em;
     }
+
+    .user-links {
+        display: flex;
+        align-items: center;
+
+        .header-profile-image {
+            width: 2rem;
+            // height: 2rem;
+            border-radius: 50%;
+
+            box-shadow: 0 0 2px #333;
+        }
+    }
 }

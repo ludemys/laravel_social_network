@@ -1,17 +1,25 @@
 @extends('layouts.main')
 @section('main')
-    <form action="{{ route('home.verificate') }}" method="post">
+    <form action="{{ route('home.verificate') }}" method="post" class="form">
         @csrf
         @method('post')
 
         @error('email')
-            <h3>*{{ $message }}</h3>
+            <small>*{{ $message }}</small><br>
         @enderror
+
+        @if (Session::has('email_unfound'))
+            <small>*{{ Session::get('email_unfound') }}</small><br>
+        @endif
         <input type="mail" name="email" placeholder="Email"><br><br>
 
         @error('password')
-            <h3>*{{ $message }}</h3>
+            <small>*{{ $message }}</small>
         @enderror
+
+        @if (Session::has('password_incorrect'))
+            <small>*{{ Session::get('password_incorrect') }}</small><br>
+        @endif
         <input type="password" name="password" placeholder="Password"><br><br>
 
         <input type="submit" value="Login">
