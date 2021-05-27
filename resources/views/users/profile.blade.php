@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('main')
-    @include('includes.avatar', ['class_name' => 'avatar-profile'])
+    @include('includes.get_image', ['filename' => session()->get('user')->image, 'disk' => 'users', 'class_name' => 'avatar-profile'])    
     {{-- <h3>{{ json_encode($user->image) }}</h3> --}}
     <h2>{{ $user->nickname }}</h2>
     

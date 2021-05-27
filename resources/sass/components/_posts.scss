@@ -1,0 +1,89 @@
+.post {
+
+    box-shadow: 0 0 2px #333;
+    margin-bottom: 2em;
+
+    display: grid;
+    grid-template-columns: 2em 15em 10em;
+    grid-template-rows: 2em 20em 2em 10em;
+    grid-template-areas: 'user-image user-nickname date'
+        'image image image'
+        'like-button likes likes'
+        'comments comments comments';
+
+    .user-image {
+        grid-area: user-image;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    .user-nickname {
+        grid-area: user-nickname;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .date {
+        grid-area: date;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .image {
+        grid-area: image;
+
+        // width: calc(100% - 2em);
+        // height: calc(100% - 2em - 1px);
+        width: 100%;
+        height: 100%;
+
+
+        // transform: translateY(calc(2em + 1px));
+    }
+
+    .like-button {
+        grid-area: like-button;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .likes {
+        grid-area: likes;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        text-align: right;
+    }
+
+    .comments {
+        grid-area: comments;
+    }
+
+    // .user-image,
+    // .user-nickname,
+    // .date {
+    //     border-bottom: 1px solid #333;
+    // }
+
+    // .like-button,
+    // .likes,
+    // .comments {
+    //     border-top: 1px solid #333;
+    // }
+
+    // .user-nickname,
+    // .user-image,
+    // .date,
+    // .comments {
+    //     padding: 1em;
+    // }
+
+    // .likes,
+    // .like-button {
+    //     padding: 0 1em;
+    // }
+}

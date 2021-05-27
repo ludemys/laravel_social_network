@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,11 +12,21 @@ use Illuminate\Support\Facades\Redirect;
 class HomeController extends Controller
 {
 
-    public function index()
+    public function index($page = 1)
     {
-        $logged_user = session()->has('user') ? session()->get('user') : false;
+        $posts = Image::limit(3)
+            ->orderBy('id', 'desc')
+            ->skip(($page - 1) * 5)
+            ->limit(5)
+            ->get();
 
-        return view('home.index', ['logged_user' => $logged_user]);
+        if (!$posts || empty($posts) || !isset($posts) || count($posts) < 1) {
+            return redirect()->action([HomeController::class, 'index']);
+        }
+
+        return view('home.index', [
+            'posts' => $posts
+        ]);
     }
 
     public function login()

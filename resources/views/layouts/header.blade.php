@@ -9,10 +9,12 @@
             @if (session()->has('user'))
 
                 <a class="user-link " href="{{ route('image.create') }}"><i class="fas fa-upload"></i></a>
-                @if(session()->get('user')->image == null)
+                @if(session()->get('user')->image === null)
                     <a class="user-link " href="{{ route('users.show', ['user' => session()->get('user')->id]) }}"><i class="far fa-user-circle"></i></a>
                 @else
-                    <a class="user-link " href="{{ route('users.show', ['user' => session()->get('user')->id]) }}">@include('includes.avatar', ['class_name' => 'header-profile-image'])</a>
+                    <a class="user-link " href="{{ route('users.show', ['user' => session()->get('user')->id]) }}">
+                        @include('includes.get_image', ['filename' => session()->get('user')->image, 'disk' => 'users', 'class_name' => 'header-profile-image'])
+                    </a>
                 @endif
 
             @else

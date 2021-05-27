@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\UserController as ControllersUserController;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -63,7 +59,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->nickname = $request->nickname;
         $user->email = $request->email;
-        $request->file('image_path') ? $user->image = $this->store_image($request->file('image_path')) : null;
+        $user->image = HelperController::store_image($request->file('image_path'), 'users');
         $user->password = Hash::make($request->password);
         $user->isAdmin = false;
 
@@ -147,7 +143,7 @@ class UserController extends Controller
         $user->name = $request->filled('name') ? $request->input('name') : $old_user->name;
         $user->email = $request->filled('email') ? $request->input('email') : $old_user->email;
         $user->password = $request->filled('new_password') ? Hash::make($request->input('new_password')) : $old_user->password;
-        $user->image = $request->file('image_path') !== null ? $this->store_image($request->file('image_path')) : $old_user->image;
+        $user->image = $request->file('image_path') !== null ? HelperController::store_image('users', $request->file('image_path')) : $old_user->image;
         $user->isAdmin = $old_user->isAdmin;
 
         $user->save();
@@ -171,25 +167,5 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-    }
-
-    public function store_image($image)
-    {
-        if ($image) {
-            // Unique name
-            $image_path_name = time() . $image->getClientOriginalName();
-
-            // Storage in storage/app/users
-            Storage::disk('users')->put($image_path_name, File::get($image));
-        }
-
-        return $image_path_name;
-    }
-
-    public function get_avatar($filename)
-    {
-        $file = Storage::disk('users')->get($filename);
-
-        return new Response($file, 200);
     }
 }

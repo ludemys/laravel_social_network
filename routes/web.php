@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HelperController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\UserController;
@@ -25,24 +26,24 @@ Route::get('/', function () {
 
 Route::prefix('/home')->group(function () {
 
-    Route::middleware('Login_auth')->group(function () {
-        Route::get('/', [HomeController::class, 'index'])
-            ->name('home.index');
-        Route::get('/profile', [HomeController::class, 'profile'])
-            ->name('home.profile');
-        Route::get('/logout', [HomeController::class, 'logout'])
-            ->name('home.logout');
-    });
-
     Route::get('/login', [HomeController::class, 'login'])
         ->name('home.login');
     Route::post('/verificate', [HomeController::class, 'verificate'])
         ->name('home.verificate');
+
+    Route::middleware('Login_auth')->group(function () {
+        Route::get('/profile', [HomeController::class, 'profile'])
+            ->name('home.profile');
+        Route::get('/logout', [HomeController::class, 'logout'])
+            ->name('home.logout');
+        Route::get('/{page?}', [HomeController::class, 'index'])
+            ->name('home.index');
+    });
 });
 
 
-Route::get('/users/avatar/{filename}', [UserController::class, 'get_avatar'])
-    ->name('users.avatar')
+Route::get('/imagesget//{filename?}/{disk}', [HelperController::class, 'get_image'])
+    ->name('image.get')
     ->middleware('Login_auth');
 
 Route::resource('/users', UserController::class);

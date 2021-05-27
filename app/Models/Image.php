@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Image extends Model
 {
@@ -25,5 +26,22 @@ class Image extends Model
     public function likes()
     {
         return $this->hasMany('App\Models\Like');
+    }
+
+    public static function get_with_limit($limit, array $order_by = ['id', 'asc'])
+    {
+        return DB::table('images')
+            ->take($limit)
+            ->orderBy($order_by[0], $order_by[1])
+            ->get();
+    }
+
+    public function get_amount_of_likes()
+    {
+        return count(
+            DB::table('likes')
+                ->where('image_id', '=', $this->id)
+                ->get()
+        );
     }
 }

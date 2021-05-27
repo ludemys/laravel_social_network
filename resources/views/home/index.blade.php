@@ -1,15 +1,21 @@
 @extends('layouts.main')
 
-@section('main')
-    @if ($logged_user)
-        @if ($logged_user->isAdmin)
-            <h1>Welcome {{ $logged_user->nickname }}, you are an Admin.</h1>
-        @else
-            <h1>Welcome {{ $logged_user->nickname }}, you are a regular user.</h1>
-        @endif
-    @else
-        <h1>Log in or Register to continue</h1>
-    @endif
-    <a href="{{ route('users.index') }}">USERS</a><br><br>
+@section('main') 
+
+    @foreach ($posts as $post)
+        <div class="post">
+            @include('includes.get_image', ['filename' => $post->user->image, 'disk' => 'users', 'class_name' => 'user-image'])
+            <p class="user-nickname">{{ $post->user->nickname }}</p>
+            <p class="date">{{ $post->date }}</p>
+
+            @include('includes.get_image', ['filename' => $post->path, 'disk' => 'images', 'alt' => $post->path, 'class_name' => 'image'])
+
+            <i class="far fa-heart like-button"></i>
+            <p class="likes">{{ $post->get_amount_of_likes() }} Likes</p>
+
+            <p class="comments">reghbuergherh</p>
+        </div>
+    @endforeach
+
 @endsection
 
