@@ -44,4 +44,25 @@ class Image extends Model
                 ->get()
         );
     }
+
+    public function get_comments()
+    {
+        return Comment::where('image_id', '=', $this->id)
+            ->limit(7)
+            ->get();
+    }
+
+    public function has_a_like_from_logged_user()
+    {
+        if (
+            count(DB::table('likes')
+                ->where('image_id', '=', $this->id)
+                ->where('user_id', '=', session()->get('user')->id)
+                ->get()) > 0
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }

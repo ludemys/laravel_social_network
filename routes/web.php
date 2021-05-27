@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HelperController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
@@ -48,9 +49,16 @@ Route::get('/imagesget//{filename?}/{disk}', [HelperController::class, 'get_imag
 
 Route::resource('/users', UserController::class);
 
-Route::prefix('/image')->group(function () {
+Route::middleware('Login_auth')->prefix('/image')->group(function () {
     Route::get('/upload', [ImageController::class, 'create'])
         ->name('image.create');
     Route::post('/store', [ImageController::class, 'store'])
         ->name('image.store');
+    Route::get('/like_toggle/{post}/{current_page}', [ImageController::class, 'like_toggle'])
+        ->name('image.like_toggle');
+});
+
+Route::middleware('Login_auth')->prefix('/comment')->group(function () {
+    Route::post('/create/{post}/{current_page}', [CommentController::class, 'create'])
+        ->name('comment.create');
 });

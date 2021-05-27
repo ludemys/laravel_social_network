@@ -4,12 +4,14 @@
     margin-bottom: 2em;
 
     display: grid;
-    grid-template-columns: 2em 15em 10em;
-    grid-template-rows: 2em 20em 2em 10em;
-    grid-template-areas: 'user-image user-nickname date'
-        'image image image'
-        'like-button likes likes'
-        'comments comments comments';
+    grid-template-columns: 2em 25em;
+    grid-template-rows: 2em 20em 2em 10em 2em 2em;
+    grid-template-areas: 'user-image user-nickname'
+        'image image'
+        'like-button likes'
+        'comments comments'
+        'comment-form comment-form'
+        'location date';
 
     .user-image {
         grid-area: user-image;
@@ -32,6 +34,13 @@
         align-items: center;
     }
 
+    .location {
+        grid-area: location;
+
+        display: flex;
+        align-items: center;
+    }
+
     .image {
         grid-area: image;
 
@@ -49,6 +58,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        border-bottom: 1px solid #333;
     }
 
     .likes {
@@ -57,33 +67,44 @@
         justify-content: flex-end;
         align-items: center;
         text-align: right;
+        border-bottom: 1px solid #333;
     }
 
     .comments {
-        grid-area: comments;
+        word-wrap: anywhere;
+
+        width: 27em;
+        border-bottom: 1px solid #333;
+
+        line-height: 1.5em;
     }
 
-    // .user-image,
-    // .user-nickname,
-    // .date {
-    //     border-bottom: 1px solid #333;
-    // }
+    .comment-input {
+        border: none;
+        padding: 0 .5em;
 
-    // .like-button,
-    // .likes,
-    // .comments {
-    //     border-top: 1px solid #333;
-    // }
+        width: 80%;
+    }
 
-    // .user-nickname,
-    // .user-image,
-    // .date,
-    // .comments {
-    //     padding: 1em;
-    // }
+    .comment-input-submit {
+        cursor: pointer;
+        background: #33333344;
+        height: 100%;
+        border: none;
+        padding: 0 .5em;
+        width: 20%;
 
-    // .likes,
-    // .like-button {
-    //     padding: 0 1em;
-    // }
+        &:hover {
+            background: #33333310;
+        }
+    }
+
+    .comment-form {
+        grid-area: comment-form;
+        padding: 0;
+
+        border-bottom: 1px solid #333;
+
+        display: flex;
+    }
 }

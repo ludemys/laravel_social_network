@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,5 +41,27 @@ class ImageController extends Controller
         $image->save();
 
         return redirect()->route('home.index');
+    }
+
+    public function like_toggle(Image $post, int $current_page)
+    {
+        if ($post->has_a_like_from_logged_user()) {
+            DB::table('likes')
+                ->where('image_id', '=', $post->id)
+                ->where('user_id', '=', session()->get('user')->id)
+                ->delete();
+        } else {
+            $like = new Like();
+
+            $like->user_id = session()->get('user')->id;
+            $like->image_id = $post->id;
+
+            $like->save();
+        }
+
+        if ($current_page === 1) {
+            return redirect()->route('home.index');
+        }
+        return redirect()->route('home.index', ['page' => $current_page]);
     }
 }
